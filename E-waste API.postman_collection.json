@@ -1,0 +1,44 @@
+{
+	"info": {
+		"_postman_id": "ece81b66-6324-45b1-87bc-cdca38d25cfb",
+		"name": "E-waste API",
+		"description": "StartFragmentAPI collection for E-Waste appEndFragment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46684448",
+		"_collection_link": "https://wael-3408786.postman.co/workspace/wael's-Workspace~cbfb44f7-2b54-4e85-8ad5-b3a167b76e3d/collection/46684448-ece81b66-6324-45b1-87bc-cdca38d25cfb?action=share&source=collection_link&creator=46684448"
+	},
+	"item": [
+		{
+			"name": "master categrories",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "PostUserSignu",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
