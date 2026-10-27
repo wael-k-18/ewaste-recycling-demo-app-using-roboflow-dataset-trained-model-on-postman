@@ -1,0 +1,673 @@
+{
+  "info": {
+    "_postman_id": "ece81b66-6324-45b1-87bc-cdca38d25cfb",
+    "name": "E-waste API",
+    "description": "Complete API collection for the E-Waste Management Application. Covers master data (categories, brands, models, conditions), user authentication, and order operations.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "🔐 Auth",
+      "item": [
+        {
+          "name": "User Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/signup",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "signup"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_name\": \"John Doe\",\n  \"user_email\": \"john@example.com\",\n  \"user_mobile\": \"9876543210\",\n  \"password\": \"Password@123\",\n  \"user_profile_photo\": \"\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "User Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.token) {",
+                  "  pm.collectionVariables.set('token', json.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_email\": \"john@example.com\",\n  \"password\": \"Password@123\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/profile",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/profile",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "profile"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_name\": \"John Updated\",\n  \"user_mobile\": \"9876543210\",\n  \"user_profile_photo\": \"https://example.com/photo.jpg\"\n}"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📦 Master — Categories",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/master/categories",
+              "host": ["{{base_url}}"],
+              "path": ["master", "categories"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Category by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/master/categories/:id",
+              "host": ["{{base_url}}"],
+              "path": ["master", "categories", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/master/categories",
+              "host": ["{{base_url}}"],
+              "path": ["master", "categories"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category_name\": \"Smartphones\",\n  \"category_photo\": \"https://example.com/smartphones.jpg\",\n  \"category_status\": 1\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/master/categories/:id",
+              "host": ["{{base_url}}"],
+              "path": ["master", "categories", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category_name\": \"Smartphones & Tablets\",\n  \"category_photo\": \"https://example.com/smartphones.jpg\",\n  \"category_status\": 1\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/master/categories/:id",
+              "host": ["{{base_url}}"],
+              "path": ["master", "categories", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🏷️ Master — Brands",
+      "item": [
+        {
+          "name": "Get All Brands",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/master/brands",
+              "host": ["{{base_url}}"],
+              "path": ["master", "brands"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Brands by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/master/brands?category_id=1",
+              "host": ["{{base_url}}"],
+              "path": ["master", "brands"],
+              "query": [{ "key": "category_id", "value": "1" }]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Brand by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/master/brands/:id",
+              "host": ["{{base_url}}"],
+              "path": ["master", "brands", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Brand",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/master/brands",
+              "host": ["{{base_url}}"],
+              "path": ["master", "brands"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category_id\": 1,\n  \"brand_name\": \"Apple\",\n  \"brand_description\": \"Apple Inc. devices\",\n  \"brand_photo\": \"https://example.com/apple.jpg\",\n  \"brand_status\": 1\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Brand",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/master/brands/:id",
+              "host": ["{{base_url}}"],
+              "path": ["master", "brands", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"brand_name\": \"Apple Inc.\",\n  \"brand_description\": \"Updated description\",\n  \"brand_status\": 1\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Brand",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/master/brands/:id",
+              "host": ["{{base_url}}"],
+              "path": ["master", "brands", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📱 Master — Models",
+      "item": [
+        {
+          "name": "Get All Models",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/master/models",
+              "host": ["{{base_url}}"],
+              "path": ["master", "models"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Models by Brand",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/master/models?brand_id=1",
+              "host": ["{{base_url}}"],
+              "path": ["master", "models"],
+              "query": [{ "key": "brand_id", "value": "1" }]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Model by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/master/models/:id",
+              "host": ["{{base_url}}"],
+              "path": ["master", "models", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Model",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/master/models",
+              "host": ["{{base_url}}"],
+              "path": ["master", "models"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"brand_id\": 1,\n  \"category_id\": 1,\n  \"model_name\": \"iPhone 14\",\n  \"model_description\": \"Apple iPhone 14 series\",\n  \"model_photo\": \"https://example.com/iphone14.jpg\",\n  \"credit_points_plus_10\": 500.00,\n  \"credit_points_plus_20\": 600.00,\n  \"credit_points_plus_50\": 700.00,\n  \"credit_points_plus_80\": 800.00,\n  \"credit_points_less_50\": 400.00,\n  \"model_status\": 1\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Model",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/master/models/:id",
+              "host": ["{{base_url}}"],
+              "path": ["master", "models", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model_name\": \"iPhone 14 Pro\",\n  \"model_status\": 1\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Model",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/master/models/:id",
+              "host": ["{{base_url}}"],
+              "path": ["master", "models", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🔧 Master — Conditions",
+      "item": [
+        {
+          "name": "Get All Conditions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/master/conditions",
+              "host": ["{{base_url}}"],
+              "path": ["master", "conditions"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Condition by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/master/conditions/:id",
+              "host": ["{{base_url}}"],
+              "path": ["master", "conditions", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Condition",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/master/conditions",
+              "host": ["{{base_url}}"],
+              "path": ["master", "conditions"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"condition_name\": \"Like New\",\n  \"anticipated_score\": 95.00,\n  \"condition_status\": 1\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Condition",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/master/conditions/:id",
+              "host": ["{{base_url}}"],
+              "path": ["master", "conditions", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"condition_name\": \"Excellent\",\n  \"anticipated_score\": 95.00,\n  \"condition_status\": 1\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Condition",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/master/conditions/:id",
+              "host": ["{{base_url}}"],
+              "path": ["master", "conditions", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🗂️ Orders",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders",
+              "host": ["{{base_url}}"],
+              "path": ["orders"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_user\": 1,\n  \"order_date\": \"2026-10-27\",\n  \"order_category\": 1,\n  \"order_brand\": 1,\n  \"order_model\": 1,\n  \"order_condition\": 1,\n  \"ai_anticipation\": 85.50,\n  \"ai_suggestion\": \"Device is in good working condition. Minor scratches on body.\",\n  \"order_qty\": 1,\n  \"evacuated_condition\": 1,\n  \"credit_points\": 750.00\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders",
+              "host": ["{{base_url}}"],
+              "path": ["orders"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders/:id",
+              "host": ["{{base_url}}"],
+              "path": ["orders", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Orders by User",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders/user/:user_id",
+              "host": ["{{base_url}}"],
+              "path": ["orders", "user", ":user_id"],
+              "variable": [{ "key": "user_id", "value": "1" }]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders/:id/status",
+              "host": ["{{base_url}}"],
+              "path": ["orders", ":id", "status"],
+              "variable": [{ "key": "id", "value": "1" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_status\": 1\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Order",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders/:id",
+              "host": ["{{base_url}}"],
+              "path": ["orders", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🖼️ Order Images",
+      "item": [
+        {
+          "name": "Upload Order Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders/:order_id/images",
+              "host": ["{{base_url}}"],
+              "path": ["orders", ":order_id", "images"],
+              "variable": [{ "key": "order_id", "value": "1" }]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Images for Order",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders/:order_id/images",
+              "host": ["{{base_url}}"],
+              "path": ["orders", ":order_id", "images"],
+              "variable": [{ "key": "order_id", "value": "1" }]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Order Image",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders/:order_id/images/:image_id",
+              "host": ["{{base_url}}"],
+              "path": ["orders", ":order_id", "images", ":image_id"],
+              "variable": [
+                { "key": "order_id", "value": "1" },
+                { "key": "image_id", "value": "1" }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
